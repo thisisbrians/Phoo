@@ -4,7 +4,7 @@ namespace Controller;
 class Application {
 	protected $route;
 	function __construct($route)
-	{
+	{	
 		if (isset($_GET['route']))
 		{
 			$this->route = explode('/',$_GET['route']);
@@ -12,18 +12,20 @@ class Application {
 		$this->_route();
 	}
 	
-	private function _route()
+	protected function _route()
 	{
-		if (isset($this->route))
+		if (isset($this->route[0]))
 		{
-			$node = $this->route[0];
-			if (method_exists($this,$node))
+			$this->node = $this->route[0];
+			$this->route = array_slice($this->route,1);
+			if (method_exists($this,$this->node))
 			{
-				$this->$node();
+				$method = $this->node;
+				$this->$method();
 			}
 			else
 			{
-				echo 'Invalid route!';
+				echo 'route not defined!';
 			}
 			
 		}
@@ -33,12 +35,18 @@ class Application {
 		}
 	}
 	
-	#Define route end-points down here:
+	#Define routes down here:
 	
 	#The default route
 	protected function _index()
 	{
-		echo 'Defaulting to index.';
+		echo 'Application: Defaulting to index.';
+	}
+	
+	protected function users() 
+	{
+		#route to the Users controller
+		new Users($this->route);
 	}
 	
 	protected function sample_dest()
