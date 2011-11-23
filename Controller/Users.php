@@ -18,6 +18,12 @@ class Users extends Application
 		echo 'This is the users page.';
 	}
 	
+	protected function sub_node()
+	{
+		#route to the sub_node controller
+		new Sub_node($this->route);
+	}
+	
 	#If this controller is dynamic, handle that behaviour here
 	protected function _dynamic()
 	{
