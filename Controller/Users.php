@@ -15,7 +15,7 @@ class Users extends Application
 	#The default route
 	protected function _index()
 	{
-		echo 'Users: Defaulting to index.';
+		echo 'This is the users page.';
 	}
 	
 	#If this controller is dynamic, handle that behaviour here

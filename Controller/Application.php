@@ -1,8 +1,11 @@
 <?
 namespace Controller;
 
-class Application {
+class Application
+{
 	protected $route;
+	protected $dynamic = false;
+	
 	function __construct($route)
 	{	
 		if (isset($_GET['route']))
@@ -17,7 +20,7 @@ class Application {
 		if (isset($this->route[0]))
 		{
 			$this->node = $this->route[0];
-			$this->route = array_slice($this->route,1);
+			$this->route = array_slice($this->route,1); // remove the part of the route handled by this controller
 			if ($this->node != '_index' && method_exists($this,$this->node))
 			{
 				$method = $this->node;
@@ -25,7 +28,7 @@ class Application {
 			}
 			elseif ($this->dynamic)
 			{
-				#remember to perform your own validation for dynamic routes, and to run _404() when appropriate
+				//remember to perform your own validation for correct URLs in your dynamic routes, and to run _404() when appropriate
 				$this->_dynamic();
 			}
 			else
@@ -55,6 +58,7 @@ class Application {
 	# you can overwrite this on a per-controller basis, if you wish
 	protected function _404($message = null)
 	{
+		header("HTTP/1.0 404 Not Found");
 		echo 'Sorry, we couldn\'t find the page your were looking for';
 		if (isset($message))
 		{
@@ -71,7 +75,7 @@ class Application {
 	#The default route
 	protected function _index()
 	{
-		$this->_render('Application: Defaulting to index.');
+		$this->_render('Welcome to the homepage!');
 	}
 	
 	protected function users() 
@@ -80,14 +84,14 @@ class Application {
 		new Users($this->route);
 	}
 	
-	protected function sample_dest()
+	private function sample_page()
 	{
-		echo 'You have reached sample_dest. This view is embedded in the controller. There is no model, yet.';
+		echo 'You have reached sample_page. This view is embedded in the controller. There is no model, yet.';
 	}
 	
-	protected function sample_dest_2()
+	private function sample_page_2()
 	{
-		echo 'You have reached sample_dest_2. This view is embedded in the controller. There is no model, yet.';
+		echo 'You have reached sample_page_2. This view is embedded in the controller. There is no model, yet.';
 	}
 	
 	#If this controller is dynamic, handle that behaviour here
