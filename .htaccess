@@ -1,0 +1,17 @@
+Options +FollowSymLinks
+RewriteEngine on
+Options -Indexes
+#RewriteBase /
+
+# always use a trailing slash
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !(.*)/$
+RewriteRule ^(.*)$ /phoo/$1/ [L,R=301]
+
+
+# route everything through the controller
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteRule ^(.*)/$ /phoo/index.php?route=$1 [QSA,L]
+
