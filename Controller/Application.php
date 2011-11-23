@@ -18,14 +18,19 @@ class Application {
 		{
 			$this->node = $this->route[0];
 			$this->route = array_slice($this->route,1);
-			if (method_exists($this,$this->node))
+			if ($this->node != '_index' && method_exists($this,$this->node))
 			{
 				$method = $this->node;
 				$this->$method();
 			}
+			elseif ($this->dynamic)
+			{
+				#remember to perform your own validation for dynamic routes, and to run _404() when appropriate
+				$this->_dynamic();
+			}
 			else
 			{
-				echo 'route not defined!';
+				$this->_404();
 			}
 			
 		}
@@ -35,12 +40,38 @@ class Application {
 		}
 	}
 	
+	protected function _render($var)
+	{
+		if(count($this->route))
+		{
+			$this->_404();
+		}
+		else
+		{
+			echo $var;
+		}
+	}
+	
+	# you can overwrite this on a per-controller basis, if you wish
+	protected function _404($message = null)
+	{
+		echo 'Sorry, we couldn\'t find the page your were looking for';
+		if (isset($message))
+		{
+			echo ': '.$message;
+		}
+		else
+		{
+			echo '.';
+		}
+	}
+	
 	#Define routes down here:
 	
 	#The default route
 	protected function _index()
 	{
-		echo 'Application: Defaulting to index.';
+		$this->_render('Application: Defaulting to index.');
 	}
 	
 	protected function users() 
@@ -57,5 +88,10 @@ class Application {
 	protected function sample_dest_2()
 	{
 		echo 'You have reached sample_dest_2. This view is embedded in the controller. There is no model, yet.';
+	}
+	
+	#If this controller is dynamic, handle that behaviour here
+	protected function _dynamic()
+	{
 	}
 }

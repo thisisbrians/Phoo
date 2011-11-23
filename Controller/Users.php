@@ -17,4 +17,21 @@ class Users extends Application
 	{
 		echo 'Users: Defaulting to index.';
 	}
+	
+	#If this controller is dynamic, handle that behaviour here
+	protected function _dynamic()
+	{
+		$users = array(
+			'1' => 'Brian Smith',
+			'2' => 'Mr. Nebo'
+		);
+		if (isset($users[$this->node]))
+		{
+			$this->_render($users[$this->node]);
+		}
+		else
+		{
+			$this->_404('user not found!');
+		}
+	}
 }
