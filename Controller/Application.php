@@ -6,7 +6,7 @@ class Application
 	protected $route;
 	protected $dynamic = false;
 	
-	function __construct($route)
+	function __construct()
 	{	
 		if (isset($_GET['route']))
 		{
@@ -84,14 +84,14 @@ class Application
 		new Users($this->route);
 	}
 	
-	private function sample_page()
+	protected function sample_page()
 	{
-		echo 'You have reached sample_page. This view is embedded in the controller. There is no model, yet.';
+		$this->_render('You have reached sample_page. This view is embedded in the controller. There is no model, yet.');
 	}
 	
-	private function sample_page_2()
+	protected function sample_page_2()
 	{
-		echo 'You have reached sample_page_2. This view is embedded in the controller. There is no model, yet.';
+		$this->_render('You have reached sample_page_2. This view is embedded in the controller. There is no model, yet.');
 	}
 	
 	#If this controller is dynamic, handle that behaviour here
