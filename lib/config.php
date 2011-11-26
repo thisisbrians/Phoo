@@ -11,3 +11,15 @@ define(DEV, true);
 
 # If your application isn't in your server's document root, append the directory to the document root here
 define(DOC_ROOT, $_SERVER['DOCUMENT_ROOT'].'/phoo/');
+
+/** The name of the MySQL database */
+define('DB_NAME', 'phoo');
+
+/** MySQL database username */
+define('DB_USER', 'root');
+
+/** MySQL database password */
+define('DB_PASSWORD', '');
+
+/** MySQL hostname */
+define('DB_HOST', 'localhost');

@@ -1,16 +1,19 @@
 <?
 namespace Model;
 
-class User
+class User extends ActiveRecord
 {
+	protected $name;
+	protected $schema = array
+	(
+		'name' => 'string'
+	);
 	function __construct() 
 	{
-		echo 'User model instantiated.';
-		$this->name = 'new user';
-	}
-	
-	function hi() {
-		echo 'hi';
-	}
-	
+		parent::__construct();
+		if (DEV) 
+		{
+			$this->_update_table();
+		}
+	}	
 }

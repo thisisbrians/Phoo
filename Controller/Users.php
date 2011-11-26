@@ -17,9 +17,9 @@ class Users extends Application
 	protected function _index()
 	{
 		$user = new \Model\User();
-		echo $user->name;
+		$user->set('name','Brian');
+		echo $user->get('name');
 		echo 'This is the users page.';
-		$user->hi();
 	}
 	
 	protected function sub_node()

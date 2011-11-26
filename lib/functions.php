@@ -16,6 +16,21 @@ function __autoload($className)
 }
 
 /*
+handles errors
+*/
+function error($message) {
+	if (DEV)
+	{
+		echo $message;
+		exit;
+	}
+	else
+	{
+		//email error, or at the very least, log it
+	}
+}
+
+/*
 print variables, arrays, and objects in human readable form using <pre> tags
 */
 function printp($var) {
