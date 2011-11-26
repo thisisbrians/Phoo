@@ -4,7 +4,8 @@ namespace Controller;
 class Users extends Application
 {
 	protected $dynamic = true;
-	function __construct($route) {
+	function __construct($route)
+	{
 		# you can modify the route here, if need be
 		$this->route = $route;
 		$this->_route();
@@ -15,7 +16,10 @@ class Users extends Application
 	#The default route
 	protected function _index()
 	{
+		$user = new \Model\User();
+		echo $user->name;
 		echo 'This is the users page.';
+		$user->hi();
 	}
 	
 	protected function sub_node()
