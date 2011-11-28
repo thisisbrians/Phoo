@@ -1,4 +1,4 @@
-<?
+<?php
 namespace Controller;
 
 class Application

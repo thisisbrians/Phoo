@@ -1,4 +1,4 @@
-<?
+<?php
 namespace Controller;
 
 class Sub_node extends Application
