@@ -8,6 +8,13 @@ class User extends ActiveRecord
 	(
 		'name' => 'string'
 	);
+	protected $validate = array
+	(
+		'name' => array 
+		(
+			'exists'
+		)
+	);
 	function __construct() 
 	{
 		parent::__construct();
