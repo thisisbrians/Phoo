@@ -59,8 +59,25 @@ class ActiveRecord
 	{
 		$id = mysql_real_escape_string($id);
 		
-		$sql = "SELECT * FROM ".$this->_table." WHERE id=".$id." LIMIT 1";
-		$result = $this->mysqli->query($sql);
-		return $result->fetch_array(MYSQLI_ASSOC);
+		if (is_numeric($id))
+		{
+			$sql = "SELECT * FROM ".$this->_table." WHERE id=".$id." LIMIT 1";
+			$result = $this->mysqli->query($sql);
+			return $result->fetch_array(MYSQLI_ASSOC);
+		}
+		elseif ($id == 'all')
+		{
+			$sql = "SELECT * FROM ".$this->_table;
+			$result = $this->mysqli->query($sql);
+			while ($row = $result->fetch_array(MYSQLI_ASSOC))
+			{
+				$return[] = $row;
+			}
+			return $return;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

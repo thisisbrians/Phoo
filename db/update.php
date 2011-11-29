@@ -2,6 +2,8 @@
 /*
 This script reads schema data from model files located in the /model/ directory
 and automatically updates the configured database to reflect the schema.
+
+Meant to be run from the command line, but can run in a browser just as well.
 */
 
 // include the config

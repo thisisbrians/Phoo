@@ -18,7 +18,8 @@ class Users extends Application
 	#The default route
 	protected function _index()
 	{
-		echo 'This is the users page.';
+		$this->data['users'] = $this->user->get('all');
+		$this->_render();
 	}
 	
 	protected function sub_node()

@@ -43,7 +43,7 @@ class Application
 		}
 	}
 	
-	protected function _render($var)
+	protected function _render($_view=null)
 	{
 		if(count($this->route))
 		{
@@ -51,7 +51,9 @@ class Application
 		}
 		else
 		{
-			echo $var;
+			//echo $var;
+			echo 'hi';
+			printp($this->data);
 		}
 	}
 	
