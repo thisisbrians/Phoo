@@ -3,11 +3,12 @@
 This script reads schema data from model files located in the /model/ directory
 and automatically updates the configured database to reflect the schema.
 */
+
+// include the config
 if (file_exists('./lib/config.php'))
 {
-	echo 'config file found...'.PHP_EOL;
+	echo "config file found...\n";
 	require_once('./lib/config.php');
-	echo 'config file included...'.PHP_EOL;
 }
 else
 {
@@ -15,12 +16,25 @@ else
 	exit;
 }
 
+// include functions
 require_once './lib/functions.php';
 
+// open up the model directory
 if ($handle = opendir('./model/'))
 {
 	echo "Model directory found...\n";
     echo "Model directory handle: $handle\n";
+
+	echo "Instantiating ActiveRecord object...\n";
+	$ActiveRecord = new \Model\ActiveRecord();
+	
+	echo "Fetching database class...\n";
+	$mysqli = $ActiveRecord->get_mysqli();
+	
+	echo "Fetching type definitions...\n";
+	$types = $ActiveRecord->get_types();
+	print_r($types);
+	
     echo "Model files:\n";
 
 	$models = array();
@@ -35,8 +49,19 @@ if ($handle = opendir('./model/'))
 
     closedir($handle);
 }
-printp(dirname(__FILE__));
 foreach ($models as $model) {
-	$classname = '\\Model\\'.preg_replace('/\.php$/','',$model);
+	$model = preg_replace('/\.php$/','',$model); // nix the '.php' from the end of the filename
+	$classname = '\\Model\\'.$model;
 	$$model = new $classname();
+	
+	$sql = "CREATE TABLE IF NOT EXISTS `".DB_NAME."`.`".$model."` (
+		    `id` INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,"; 
+	foreach ($$model->get_schema() as $property=>$type)
+	{
+		$sql .= "`".$property."` ".$types[$type].",";
+	}
+	$sql .= "`created` INT(10) NOT NULL, 
+		     `modified` INT(10) NOT NULL
+		      ) ENGINE = MyISAM;";
+	$mysqli->query($sql);
 }

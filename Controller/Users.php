@@ -6,6 +6,8 @@ class Users extends Application
 	protected $dynamic = true;
 	function __construct($route)
 	{
+		$this->user = new \Model\User();
+		
 		# you can modify the route here, if need be
 		$this->route = $route;
 		$this->_route();
@@ -16,9 +18,6 @@ class Users extends Application
 	#The default route
 	protected function _index()
 	{
-		$user = new \Model\User();
-		$user->set('name','Brian');
-		echo $user->get('name');
 		echo 'This is the users page.';
 	}
 	
@@ -31,13 +30,10 @@ class Users extends Application
 	#If this controller is dynamic, handle that behaviour here
 	protected function _dynamic()
 	{
-		$users = array(
-			'1' => 'Brian Smith',
-			'2' => 'Mr. Nebo'
-		);
-		if (isset($users[$this->node]))
+		$user = $this->user->get($this->node);
+		if (isset($user['name']))
 		{
-			$this->_render($users[$this->node]);
+			$this->_render(print_r($user,false));
 		}
 		else
 		{

@@ -11,9 +11,5 @@ class User extends ActiveRecord
 	function __construct() 
 	{
 		parent::__construct();
-		if (DEV) 
-		{
-			$this->_update_table();
-		}
 	}	
 }
