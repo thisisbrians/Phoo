@@ -19,7 +19,7 @@ class Users extends Application
 	protected function _index()
 	{
 		$this->data['users'] = $this->user->get('all');
-		$this->_render();
+		$this->_render('index');
 	}
 	
 	protected function sub_node()
@@ -28,13 +28,19 @@ class Users extends Application
 		new Sub_node($this->route);
 	}
 	
+	protected function create()
+	{
+		$this->_render('create');
+	}
+	
 	#If this controller is dynamic, handle that behaviour here
 	protected function _dynamic()
 	{
 		$user = $this->user->get($this->node);
-		if (isset($user['name']))
+		if ($user)
 		{
-			$this->_render(print_r($user,false));
+			$this->data['user'] = $user;
+			$this->_render('user');
 		}
 		else
 		{

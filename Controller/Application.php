@@ -5,13 +5,14 @@ class Application
 {
 	protected $route;
 	protected $dynamic = false;
-	
+	protected $_viewdir;
 	function __construct()
 	{	
 		if (isset($_GET['route']))
 		{
 			$this->route = explode('/',$_GET['route']);
 		}
+		$this->_viewdir = '/';
 		$this->_route();
 	}
 	
@@ -44,16 +45,26 @@ class Application
 	}
 	
 	protected function _render($_view=null)
-	{
+	{	
+		if (!isset($this->_viewdir))
+		{
+			// by default, fetch name of view directory from filename
+			$classname = get_class($this);
+			$this->_viewdir = '/'.preg_replace('/^.*\\\/','',$classname).'/'; // get everthing after 'Controller\'
+		}
+		
 		if(count($this->route))
 		{
+			// should only render if this is the last node in the route
 			$this->_404();
 		}
 		else
 		{
-			//echo $var;
-			echo 'hi';
-			printp($this->data);
+			//construct absolute path of the view
+			$this->data['_view'] = ABS_PATH.'view'.$this->_viewdir.$_view.'.php';
+			
+			// $this->data should be passed to the appropriate view for rendering
+			new \view\View($this->data);
 		}
 	}
 	
@@ -77,7 +88,8 @@ class Application
 	#The default route
 	protected function _index()
 	{
-		$this->_render('Welcome to the homepage!');
+		$this->data['content'] = 'Welcome to the homepage!';
+		$this->_render('index');
 	}
 	
 	protected function users() 
